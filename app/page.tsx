@@ -1,333 +1,266 @@
+import Image from "next/image"
 import Link from "next/link"
-import { Apple, ArrowLeftRight, Banknote, Briefcase, CalendarCheck, CreditCard, GraduationCap, MapPin, PartyPopper, Plane, ShieldCheck, Smartphone, UserRound } from "lucide-react"
-import { BlogCard } from "@/components/BlogCard"
-import { BookingForm } from "@/components/BookingForm"
-import { RateCards } from "@/components/Rates"
+import { ArrowUpRight, Check, Star } from "lucide-react"
 import { Reveal } from "@/components/Reveal"
 import { Reviews } from "@/components/Reviews"
-import { Band, CtaLink, Faq, Pic, SectionHead } from "@/components/ui"
-import { contact, pages, paras, posts, services, toCards, toFaqs, toSections } from "@/lib/site"
+import { UsMap } from "@/components/UsMap"
+import { VideoButton } from "@/components/VideoButton"
+import { WhyTabs } from "@/components/WhyTabs"
+import { Band, CtaLink, Pic } from "@/components/ui"
+import { home, img, services } from "@/lib/site"
 
-const secs = toSections(pages.home.blocks)
 const IMG = {
-  hero: "/site/middle-aged-woman-exiting-car-assisted-by-chauffeu-2025-11-13-22-08-58-utc-scaled.jpg",
-  door: "/site/chauffeur-service.jpg",
-  man: "/site/ChatGPT-Image-Jun-27-2026-01_06_18-PM-14.png",
-  biz: "/site/african-american-businessman-in-suit-using-smartph-2024-11-14-14-18-09-utc.jpg",
+  hero: img("2024/09/GettyImages-200297202-002-1.jpg"),
+  truck: img("2024/09/truck.png"),
+  about: img("2024/09/GettyImages-1387784170.jpg"),
+  why: img("2024/09/GettyImages-1329868766.jpg"),
+  container: img("2024/09/Conatiner-2.png"),
+  carriers: img("2024/09/GettyImages-646271897.jpg"),
+  pattern: img("2024/09/Conatiner-4.png"),
+  truckLine: img("2024/09/truck-il.svg"),
+  shape: img("2024/10/shape.svg"),
+  triangle: img("2024/09/shape-triangle.svg"),
+  posters: [img("2026/06/ChatGPT-Image-Jun-25-2026-10_31_41-PM-1.png"), img("2026/06/ChatGPT-Image-Jun-25-2026-10_25_53-PM-1.png")],
 }
 
-const serviceIcons = [ShieldCheck, CalendarCheck, UserRound, Plane, Briefcase, GraduationCap, ArrowLeftRight, MapPin, PartyPopper]
-const commitIcons = [CalendarCheck, Plane, GraduationCap, UserRound]
-const commitLinks = [
-  "/services/monthly-driver-dubai",
-  "/services/airport-transfer-dubai",
-  "/services/school-pick-up-drop-off",
-  "/services/personal-driver-dubai",
-]
-const reviewers = [
-  { name: "Abdul Rehman", avatar: "/site/unnamed.png" },
-  { name: "Ferlyn Biliran", avatar: "/site/unnamed-1.png" },
-  { name: "Shakil Advertisers", avatar: "/site/unnamed-2.png" },
-  { name: "Michael Patrick Foley", avatar: "/site/unnamed-3.png" },
-]
+const clientLogos = ["tecnologia", "Scuola_Logo_OnlyTop-1", "fiore", "konstruktion", "jolie-1", "caridad-1", "F7"]
 
 export default function Home() {
-  const welcome = secs[1]
-  const h1 = welcome.items.find((b) => b.t === "h")!.x
-  const lead = paras(welcome.items)[0]
-  const intro = secs[2]
-  const commit = secs[3]
-  const commitCards = toCards(commit.items)
-  const offer = secs[5]
-  const offerCards = toCards(offer.items)
-  const reviewSec = secs[6]
-  const reviewParas = paras(reviewSec.items)
-  const offer2 = secs[7]
-  const offer2Cards = toCards(offer2.items)
-  const faqs = toFaqs(secs[12].items)
-  const rates = secs[10]
-  const comma = h1.indexOf(",")
+  const h = home
 
   return (
     <>
       {/* ================= Hero (full width) ================= */}
-      <section className="relative isolate z-10 overflow-hidden bg-[#111113] pb-10 text-white [clip-path:polygon(0_0,100%_0,100%_calc(100%-56px),0_100%)] md:pb-14">
+      <section className="relative isolate z-10 overflow-hidden bg-[#0a1a3a] pb-10 text-white [clip-path:polygon(0_0,100%_0,100%_calc(100%-56px),0_100%)] md:pb-14">
         <div className="absolute inset-0 -z-10">
           <Pic src={IMG.hero} sizes="100vw" priority className="object-[60%_center]" />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/70 to-black/30" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#050e24]/95 via-[#050e24]/75 to-[#050e24]/45" />
+          <Image src={IMG.shape} alt="" width={647} height={702} unoptimized className="pointer-events-none absolute -right-20 top-1/2 hidden h-[130%] w-auto max-w-none -translate-y-1/2 opacity-[0.06] lg:block" />
         </div>
-        <div className="container-x grid items-center gap-10 py-14 lg:grid-cols-[1.2fr_0.8fr] lg:gap-16 lg:py-24">
+        <div className="container-x grid items-center gap-14 py-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16 lg:py-16">
           <div>
-            <span className="eyebrow">{secs[0].title}</span>
-            <p className="mt-5 text-sm font-medium text-white/70">{welcome.title}</p>
-            <h1 className="mt-3 max-w-2xl text-balance text-4xl font-semibold leading-[1.12] md:text-4xl">
-              {h1.slice(0, comma + 1)} <span className="text-accent">{h1.slice(comma + 1).trim()}</span>
+            <h1 className="max-w-2xl text-balance text-4xl font-semibold leading-[1.1] md:text-5xl">
+              {h.heroLines[0]} <span className="text-[#ff5a64]">{h.heroLines[1]}</span>
             </h1>
-            <p className="mt-6 max-w-xl text-pretty text-lg leading-relaxed text-white/75">{lead}</p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <CtaLink href="#book">Book Now</CtaLink>
-              <a href={contact.phoneHref} className="btn btn-ghost !border-white/30 !text-white hover:!border-white">
-                {contact.phone}
-              </a>
+            <p className="mt-7 max-w-xl text-pretty text-lg leading-relaxed text-white/80">{h.lead}</p>
+            <div className="mt-9 flex flex-wrap items-center gap-5">
+              <CtaLink href="/contact-us">{h.heroCta}</CtaLink>
+              <VideoButton />
+            </div>
+            <ul className="mt-10 grid max-w-xl gap-x-6 gap-y-3 text-sm font-medium text-white/85 sm:grid-cols-2">
+              {["100% Licensed/ Bonded/Insured", "Local and international delivery", "Trusted & Secure", "Always on time"].map((t) => (
+                <li key={t} className="flex items-center gap-3">
+                  <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-accent text-accent-ink">
+                    <Check size={12} strokeWidth={3} />
+                  </span>
+                  {t}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="relative mx-auto w-full max-w-[400px] pb-12 lg:mx-0 lg:justify-self-end">
+            <div className="absolute -right-4 -top-4 h-full w-full rounded-3xl border-2 border-accent/70" aria-hidden />
+            <div className="relative aspect-square rotate-[2deg] overflow-hidden rounded-3xl border border-white/15 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.7)]">
+              <Pic src={IMG.posters[0]} sizes="(min-width: 1024px) 40vw, 90vw" priority />
+            </div>
+            <div className="absolute -bottom-0 left-0 right-6 overflow-hidden rounded-2xl border border-white/10 bg-[#0a1a3a]/95 p-5 shadow-[var(--shadow)] backdrop-blur sm:left-[-28px] sm:right-auto sm:w-[360px]">
+              <dl className="grid grid-cols-2 gap-x-5 gap-y-4">
+                {h.stats.map((s) => (
+                  <div key={s.l}>
+                    <dt className="font-display text-2xl font-semibold text-[#ff5a64] md:text-3xl">{s.n}</dt>
+                    <dd className="mt-0.5 text-xs text-white/70">{s.l}</dd>
+                  </div>
+                ))}
+              </dl>
             </div>
           </div>
-          <div id="book" className="scroll-mt-28 lg:max-w-[460px] lg:justify-self-end lg:w-full">
-            <BookingForm />
-          </div>
         </div>
       </section>
 
-      {/* ================= Services quick links + payment + apps ================= */}
-      <section className="relative z-[5] -mt-14 bg-surface-2 pb-20 pt-24 [clip-path:polygon(0_0,100%_0,100%_100%,0_calc(100%-48px))] md:pb-24 md:pt-28">
+      {/* ================= Services ================= */}
+      <section
+        id="services"
+        className="relative z-[5] -mt-14 scroll-mt-24 bg-surface-2 pb-20 pt-24 [clip-path:polygon(0_0,100%_0,100%_100%,0_calc(100%-48px))] md:pb-24 md:pt-28"
+      >
         <div className="container-x">
-          <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-9">
-            {services.map((s, i) => {
-              const Icon = serviceIcons[i]
-              return (
-                <li key={s.slug}>
-                  <Link
-                    href={`/services/${s.slug}`}
-                    className="flex h-full flex-col items-center gap-3 rounded-xl bg-surface p-4 text-center text-[13px] font-semibold leading-snug shadow-[var(--shadow)] transition hover:-translate-y-1"
-                  >
-                    <span className="grid h-12 w-12 place-items-center rounded-full bg-[#0a0a0a] text-accent">
-                      <Icon size={22} />
+          <Reveal>
+            <span className="eyebrow">{h.services.eyebrow}</span>
+            <h2 className="mt-4 max-w-4xl text-balance text-2xl font-semibold leading-[1.25] md:text-[34px]">{h.services.title}</h2>
+          </Reveal>
+
+          <div className="mt-10 grid gap-6 md:grid-cols-2">
+            {services.map((s, i) => (
+              <Reveal key={s.slug} delay={i * 80}>
+                <Link href={`/${s.slug}`} className="card group block overflow-hidden transition hover:-translate-y-1 hover:shadow-[var(--shadow)]">
+                  <div className="relative aspect-square overflow-hidden bg-[#0a1a3a]">
+                    <Pic src={IMG.posters[i]} sizes="(min-width: 768px) 45vw, 100vw" className="transition duration-700 group-hover:scale-105" />
+                  </div>
+                  <div className="flex items-center justify-between gap-4 p-6">
+                    <h3 className="font-display text-xl font-semibold group-hover:text-accent">{s.label}</h3>
+                    <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-accent text-accent-ink">
+                      <ArrowUpRight size={18} />
                     </span>
-                    {s.label}
-                  </Link>
-                </li>
-              )
-            })}
-          </ul>
-
-          <div className="mx-auto mt-6 flex max-w-4xl flex-wrap items-center justify-center gap-x-6 gap-y-3 rounded-xl bg-surface px-6 py-4 shadow-[var(--shadow)]">
-            <span className="font-display font-semibold">{offerCards.cards[0].heading} :</span>
-            {["Cash", "Cards", "Bank Transfers", "Digital Payments"].map((p) => (
-              <span key={p} className="flex items-center gap-2 text-sm font-medium text-muted">
-                <CreditCard size={16} className="text-accent" /> {p}
-              </span>
+                  </div>
+                </Link>
+              </Reveal>
             ))}
           </div>
 
-          <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
-            {[
-              { l: "Android", Icon: Smartphone },
-              { l: "Apple", Icon: Apple },
-            ].map(({ l, Icon }) => (
-              <span key={l} className="flex items-center gap-3 rounded-lg border border-white/20 bg-[#0a0a0a] px-5 py-2.5 text-white">
-                <Icon size={22} />
-                <span className="text-left leading-tight">
-                  <span className="block text-[10px] uppercase tracking-wider text-white/60">100% Digital</span>
-                  <span className="block font-display text-base font-semibold">{l}</span>
-                </span>
-              </span>
-            ))}
-          </div>
+          <Reveal className="mt-6">
+            <div className="relative isolate flex flex-col items-start justify-between gap-5 overflow-hidden rounded-2xl bg-[#0a1a3a] p-7 text-white md:flex-row md:items-center md:p-9">
+              <Image src={IMG.triangle} alt="" width={296} height={295} unoptimized className="pointer-events-none absolute -right-10 -top-16 -z-10 h-64 w-auto opacity-[0.07]" />
+              <p className="max-w-3xl text-lg font-semibold leading-snug md:text-xl">{h.services.quote}</p>
+              <CtaLink href="/contact-us">{h.services.quoteCta}</CtaLink>
+            </div>
+          </Reveal>
         </div>
       </section>
 
-      {/* ================= Intro ================= */}
+      {/* ================= State map ================= */}
       <Band className="-mt-12 !pt-28 md:!pt-36">
-        <div className="grid items-start gap-12 lg:grid-cols-[5fr_7fr] lg:gap-20">
-          <Reveal className="lg:sticky lg:top-32">
+        <div className="text-center">
+          <span className="eyebrow">{h.mapEyebrow}</span>
+        </div>
+        <div className="mx-auto mt-10 max-w-5xl">
+          <UsMap />
+        </div>
+      </Band>
+
+      {/* ================= About ================= */}
+      <Band tone="alt">
+        <div className="grid items-center gap-12 lg:grid-cols-[5fr_7fr] lg:gap-20">
+          <Reveal>
             <div className="relative mx-auto max-w-md pb-6 pr-6 lg:max-w-none">
               <div className="absolute bottom-0 right-0 h-[88%] w-[88%] rounded-2xl bg-accent" aria-hidden />
               <div className="relative aspect-[4/5] overflow-hidden rounded-2xl shadow-[var(--shadow)]">
-                <Pic src={IMG.door} sizes="(min-width: 1024px) 40vw, 90vw" />
+                <Pic src={IMG.about} sizes="(min-width: 1024px) 40vw, 90vw" />
               </div>
             </div>
           </Reveal>
           <Reveal>
-            <h2 className="max-w-2xl text-balance text-2xl font-semibold uppercase leading-[1.25] tracking-tight md:text-[32px]">
-              {intro.title}
-            </h2>
+            <span className="eyebrow">{h.about.eyebrow}</span>
+            <h2 className="mt-4 max-w-2xl text-balance text-2xl font-semibold leading-[1.3] tracking-tight md:text-[32px]">{h.about.title}</h2>
             <div className="mt-4 h-1 w-16 rounded-full bg-accent" aria-hidden />
-            {(() => {
-              const ps = paras(intro.items)
-              return (
-                <div className="mt-8 max-w-3xl space-y-6 text-[16px] leading-[1.85] text-muted">
-                  <p className="border-l-4 border-accent pl-5 text-[19px] leading-[1.7] text-ink">{ps[0]}</p>
-                  {ps.slice(1, -1).map((p, i) => (
-                    <p key={i}>{p}</p>
-                  ))}
-                  <p className="rounded-xl bg-surface-2 p-6 text-ink">{ps[ps.length - 1]}</p>
-                </div>
-              )
-            })()}
-            <div className="mt-8 flex flex-wrap gap-3">
-              <CtaLink href="#book">Book Now</CtaLink>
-              <a href={contact.phoneHref} className="btn btn-ghost">
-                {contact.phone}
-              </a>
+            <p className="mt-8 max-w-3xl border-l-4 border-accent pl-5 text-[18px] leading-[1.75] text-ink">{h.about.text}</p>
+            <div className="mt-8">
+              <CtaLink href="/about">{h.about.cta}</CtaLink>
             </div>
           </Reveal>
         </div>
       </Band>
 
-      {/* ================= What We Commit ================= */}
-      <Band tone="alt">
-        <SectionHead eyebrow={commit.title} title={commit.title} lead={commitCards.intro[0]} />
-        <div className="mt-12 grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
-          {commitCards.cards.map((c, i) => {
-            const Icon = commitIcons[i]
-            return (
-              <Reveal key={c.heading} delay={i * 70}>
-                <Link href={commitLinks[i]} className="card group flex h-full flex-col p-7 transition hover:-translate-y-1 hover:shadow-[var(--shadow)]">
-                  <span className="grid h-12 w-12 place-items-center rounded-xl bg-accent text-accent-ink">
-                    <Icon size={22} />
-                  </span>
-                  <h3 className="mt-6 font-display text-xl font-semibold group-hover:text-accent">{c.heading}</h3>
-                  <p className="mt-3 text-sm leading-relaxed text-muted">{c.body[0]}</p>
-                </Link>
+      {/* ================= Why us (dark) ================= */}
+      <section className="relative isolate overflow-hidden bg-navy text-[#f3f3f1]">
+        <div className="absolute inset-0 -z-10">
+          <Pic src={IMG.why} sizes="100vw" className="opacity-25" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#050e24]/90 via-[#050e24]/75 to-[#050e24]/55" />
+        </div>
+        <div className="container-x grid gap-12 py-16 md:py-24 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16">
+          <Reveal>
+            <span className="eyebrow">{h.why.eyebrow}</span>
+            <h2 className="mt-4 max-w-3xl text-balance text-3xl font-semibold leading-tight md:text-[40px]">{h.why.title}</h2>
+            <div className="mt-8 max-w-3xl">
+              <WhyTabs tabs={h.why.tabs} dark />
+            </div>
+          </Reveal>
+          <Reveal className="self-center">
+            <div className="relative overflow-hidden rounded-2xl bg-accent p-8 text-accent-ink md:p-10">
+              <div className="pointer-events-none absolute -right-10 -top-10 h-48 w-48 rounded-full bg-white/25 blur-3xl" aria-hidden />
+              <h3 className="relative text-balance font-display text-2xl font-semibold leading-tight md:text-3xl">{h.why.ctaTitle}</h3>
+              <Link href="/contact-us" className="btn relative mt-7 bg-[#0a1a3a] text-white hover:brightness-125">
+                {h.why.cta} <ArrowUpRight size={17} />
+              </Link>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ================= Easy set up ================= */}
+      <Band tone="dark" className="relative isolate overflow-hidden">
+        <Image src={IMG.pattern} alt="" width={805} height={1431} unoptimized className="pointer-events-none absolute -right-24 top-0 -z-10 hidden h-full w-auto max-w-none opacity-[0.07] lg:block" />
+        <Image src={IMG.truckLine} alt="" width={1309} height={366} unoptimized className="pointer-events-none absolute -left-10 bottom-0 -z-10 hidden w-[720px] max-w-none opacity-60 md:block" />
+        <div className="grid items-center gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+          <Reveal>
+            <h2 className="text-balance text-3xl font-semibold leading-tight md:text-[40px]">
+              {h.setup.title[0]} <span className="text-[#ff5a64]">{h.setup.title[1]}</span>
+            </h2>
+            <Image src={IMG.container} alt="" width={805} height={585} className="mx-auto mt-8 h-auto w-full max-w-sm" />
+          </Reveal>
+          <ol className="grid gap-4">
+            {h.setup.steps.map((s, i) => (
+              <Reveal key={s.t} delay={i * 70}>
+                <li className="flex items-start gap-5 rounded-2xl border border-white/12 bg-white/[0.04] p-6">
+                  <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-accent font-display text-lg font-semibold text-accent-ink">{s.n}</span>
+                  <div>
+                    <h3 className="font-display text-xl font-semibold">{s.t}</h3>
+                    <p className="mt-1.5 text-[15px] leading-relaxed text-white/70">{s.p}</p>
+                  </div>
+                </li>
               </Reveal>
-            )
-          })}
+            ))}
+          </ol>
         </div>
       </Band>
 
-      {/* ================= What We Offer (dark band) ================= */}
-      <section className="bg-navy text-[#f3f3f1]">
-        <div className="grid lg:grid-cols-2">
-          <div className="px-5 py-16 md:px-12 lg:py-24 lg:pl-[max(48px,calc((100vw-1480px)/2+64px))] lg:pr-16">
-            <span className="eyebrow">{secs[4].title}</span>
-            <h2 className="mt-4 text-balance text-3xl font-semibold leading-tight md:text-[40px]">{offer.title}</h2>
-            <div className="mt-6 space-y-4 text-[17px] leading-[1.8] text-white/75">
-              {offerCards.intro.map((p) => (
-                <p key={p}>{p}</p>
-              ))}
-            </div>
-          </div>
-          <div className="relative min-h-[320px]">
-            <Pic src={IMG.man} sizes="(min-width: 1024px) 50vw, 100vw" className="object-[70%_center]" />
-          </div>
+      {/* ================= Carriers teaser ================= */}
+      <section className="relative isolate overflow-hidden bg-navy text-white">
+        <div className="absolute inset-0 -z-10">
+          <Pic src={IMG.carriers} sizes="100vw" className="opacity-25" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#050e24]/95 via-[#050e24]/80 to-[#050e24]/50" />
         </div>
-        <div className="container-x pb-16 pt-4 md:pb-24">
-          <div className="grid gap-5 md:grid-cols-3">
-            {[
-              { c: offerCards.cards[0], Icon: Banknote },
-              { c: offerCards.cards[1], Icon: ShieldCheck },
-              { c: offerCards.cards[2], Icon: Smartphone },
-            ].map(({ c, Icon }) => (
-              <div key={c.heading} className="rounded-2xl border border-white/12 bg-white/[0.04] p-7">
-                <span className="grid h-12 w-12 place-items-center rounded-xl bg-accent text-accent-ink">
-                  <Icon size={22} />
-                </span>
-                <h3 className="mt-5 font-display text-xl font-semibold">{c.heading}</h3>
-                <p className="mt-3 text-[15px] leading-[1.75] text-white/70">{c.body[0]}</p>
-                {c.body.length > 1 && (
-                  <div className="mt-5 flex flex-wrap gap-2">
-                    {c.body.slice(1).map((t) => (
-                      <span key={t} className="rounded-md bg-accent px-3 py-1.5 text-xs font-semibold text-accent-ink">
-                        {t}
-                      </span>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
+        <div className="container-x py-16 md:py-24">
+          <Reveal className="max-w-3xl">
+            <span className="eyebrow">{h.carriersTeaser.eyebrow}</span>
+            <h2 className="mt-4 text-balance text-3xl font-semibold leading-tight md:text-[40px]">{h.carriersTeaser.title}</h2>
+            <ul className="mt-8 grid gap-3 sm:grid-cols-3">
+              {h.carriersTeaser.items.map((t) => (
+                <li key={t} className="flex items-start gap-3 rounded-xl border border-white/12 bg-white/[0.05] px-5 py-4 font-medium">
+                  <span className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-accent text-accent-ink">
+                    <Check size={14} strokeWidth={3} />
+                  </span>
+                  {t}
+                </li>
+              ))}
+            </ul>
+            <div className="mt-8">
+              <CtaLink href="/carriers">{h.carriersTeaser.cta}</CtaLink>
+            </div>
+          </Reveal>
         </div>
       </section>
 
       {/* ================= Reviews ================= */}
       <Band>
-        <SectionHead eyebrow="Customers Feedback" title={reviewSec.title} lead={reviewParas[0]} />
-        <div className="mt-12">
-          <Reviews items={reviewers.map((r, i) => ({ ...r, text: reviewParas[i + 1] }))} />
-        </div>
-      </Band>
-
-      {/* ================= Door-step + priority ================= */}
-      <Band tone="alt">
-        <div className="grid items-start gap-12 lg:grid-cols-2 lg:gap-16">
-          <Reveal>
-            <span className="eyebrow">{secs[7].title}</span>
-            <p className="mt-5 leading-[1.8] text-muted">{offer2Cards.intro[0]}</p>
-            <div className="mt-8 grid gap-4 sm:grid-cols-2">
-              {offer2Cards.cards.slice(0, 2).map((c) => (
-                <div key={c.heading} className="card p-6">
-                  <h3 className="font-display text-lg font-semibold">{c.heading}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-muted">{c.body[0]}</p>
-                  {c.body.length > 1 && (
-                    <div className="mt-4 flex flex-wrap gap-2">
-                      {c.body.slice(1).map((t) => (
-                        <span key={t} className="rounded-md bg-accent px-2.5 py-1 text-xs font-semibold text-accent-ink">
-                          {t}
-                        </span>
-                      ))}
-                    </div>
-                  )}
+        <div className="flex flex-wrap items-end justify-between gap-6">
+          <div>
+            <span className="eyebrow">{h.reviews.eyebrow}</span>
+            <div className="mt-5 flex items-center gap-5">
+              <span className="font-display text-6xl font-semibold leading-none">{h.reviews.rating}</span>
+              <div>
+                <div className="flex gap-1 text-accent" aria-hidden>
+                  {[0, 1, 2, 3, 4].map((n) => (
+                    <Star key={n} size={20} fill="currentColor" />
+                  ))}
                 </div>
-              ))}
-            </div>
-          </Reveal>
-          <Reveal>
-            <div className="relative aspect-[16/11] overflow-hidden rounded-2xl">
-              <Pic src={IMG.biz} sizes="(min-width: 1024px) 45vw, 100vw" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
-              <div className="absolute inset-x-0 bottom-0 p-7 text-white">
-                <h3 className="font-display text-2xl font-semibold">{secs[8].title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-white/80">{paras(secs[8].items)[0]}</p>
+                <p className="mt-1.5 text-sm font-medium text-muted">
+                  {h.reviews.ratingLabel} <span className="text-ink">{h.reviews.count}</span>
+                </p>
               </div>
             </div>
-            <div className="card mt-5 p-7">
-              <h3 className="font-display text-xl font-semibold">{secs[9].title}</h3>
-              <p className="mt-3 text-sm leading-relaxed text-muted">{paras(secs[9].items)[0]}</p>
-            </div>
-          </Reveal>
-        </div>
-      </Band>
-
-      {/* ================= Rates ================= */}
-      <Band>
-        <SectionHead eyebrow="Pricing" title={rates.title} center />
-        <div className="mt-12">
-          <RateCards items={rates.items} />
-        </div>
-      </Band>
-
-      {/* ================= Blog ================= */}
-      <Band tone="alt">
-        <div className="flex flex-wrap items-end justify-between gap-6">
-          <SectionHead eyebrow="Our News" title={secs[11].title} />
-          <Link href="/blog" className="btn btn-ghost">
-            Show All News
-          </Link>
-        </div>
-        <div className="mt-12 grid gap-6 md:grid-cols-3">
-          {posts.slice(0, 3).map((p) => (
-            <BlogCard key={p.slug} post={p} />
-          ))}
-        </div>
-      </Band>
-
-      {/* ================= FAQ ================= */}
-      <Band>
-        <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
-          <div className="lg:sticky lg:top-32 lg:self-start">
-            <SectionHead eyebrow="FAQ" title={secs[12].title} />
-            <div className="relative mt-10 aspect-[4/3] overflow-hidden rounded-2xl shadow-[var(--shadow)]">
-              <Pic src="/site/Jun-19-2026-11_25_03-AM.png" sizes="(min-width: 1024px) 35vw, 100vw" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-              <a href={contact.phoneHref} className="absolute bottom-4 left-4 rounded-lg bg-accent px-5 py-3 font-display font-semibold text-accent-ink">
-                {contact.phone}
-              </a>
-            </div>
           </div>
-          <Faq items={faqs} />
         </div>
+        <div className="mt-10">
+          <Reviews items={h.reviews.items.map((r) => ({ name: r.name, text: r.text, role: r.role }))} />
+        </div>
+        <ul className="mt-14 flex flex-wrap items-center justify-center gap-x-12 gap-y-8 border-t border-line pt-12" aria-label="Clients">
+          {clientLogos.map((l) => (
+            <li key={l}>
+              <Image src={img(`2024/09/${l}.svg`)} alt="" width={150} height={24} unoptimized className="logo-svg h-6 w-auto max-w-[150px]" />
+            </li>
+          ))}
+        </ul>
       </Band>
-
-      {/* ================= Call now (full width) ================= */}
-      <section className="bg-accent text-accent-ink">
-        <div className="container-x flex flex-col items-start justify-between gap-6 py-14 md:flex-row md:items-center">
-          <h2 className="max-w-2xl text-balance text-2xl font-semibold leading-tight md:text-[34px]">
-            CALL NOW - Solution Of All CHAUFFEUR SERVICE Needs in DUBAI.
-          </h2>
-          <a href={contact.phoneHref} className="rounded-xl bg-[#111113] px-8 py-4 font-display text-xl font-semibold text-white transition hover:scale-[1.03]">
-            {contact.phone}
-          </a>
-        </div>
-      </section>
     </>
   )
 }

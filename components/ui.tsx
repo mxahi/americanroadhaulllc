@@ -83,7 +83,7 @@ export function PageHero({
           <Pic src={image} sizes="100vw" priority className="opacity-40" />
         </div>
       )}
-      <div className="absolute inset-0 -z-10 bg-gradient-to-r from-black/85 via-black/60 to-black/30" />
+      <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#050e24]/85 via-[#050e24]/60 to-[#050e24]/30" />
       <div className="container-x py-16 md:py-24">
         <nav className="flex flex-wrap items-center gap-2 text-sm text-white/70" aria-label="Breadcrumb">
           {crumbs.map((c, i) => (

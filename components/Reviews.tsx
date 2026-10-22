@@ -4,7 +4,7 @@ import Image from "next/image"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { ChevronLeft, ChevronRight, Quote } from "lucide-react"
 
-export type Review = { name: string; text: string; avatar?: string }
+export type Review = { name: string; text: string; role?: string; avatar?: string }
 
 /** Review slider: 3 cards per view on desktop, 2 on tablet, 1 on phones. */
 export function Reviews({ items }: { items: Review[] }) {
@@ -81,7 +81,10 @@ export function Reviews({ items }: { items: Review[] }) {
                   {r.name[0]}
                 </span>
               )}
-              <span className="font-display font-semibold">{r.name}</span>
+              <span className="leading-tight">
+                <span className="block font-display font-semibold">{r.name}</span>
+                {r.role && <span className="mt-0.5 block text-sm text-muted">{r.role}</span>}
+              </span>
             </figcaption>
           </figure>
         ))}

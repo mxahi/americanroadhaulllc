@@ -18,7 +18,7 @@ const RADIUS = 44 // roundness of the turns
 /**
  * Desktop-only watermark: a thin outlined road runs down the page along the empty margins and turns
  * (with rounded corners) across the gaps between sections - never over text. It starts and ends in a
- * round turn-around loop. A small car drives along it as the page scrolls and always stays on screen:
+ * round turn-around loop. A small truck drives along it as the page scrolls and always stays on screen:
  * down toward the footer, and back up to its parking spot when scrolling up.
  */
 export function CarRoad() {
@@ -190,7 +190,7 @@ export function CarRoad() {
       let diff = ((want - heading + 540) % 360) - 180
       if (Math.abs(diff) < 0.05) diff = 0
       heading += diff * 0.2
-      el.style.transform = `translate(${xs[i] - 15}px, ${ys[i] - 32}px) rotate(${heading}deg)`
+      el.style.transform = `translate(${xs[i] - 15}px, ${ys[i] - 46}px) rotate(${heading}deg)`
     }
     const step = () => {
       const delta = target - current
@@ -249,61 +249,60 @@ export function CarRoad() {
         />
         <path d={d} fill="none" stroke="#8a8a8a" strokeOpacity="0.55" strokeWidth="1.5" strokeDasharray="9 11" />
       </svg>
-      <div ref={car} className="absolute left-0 top-0 will-change-transform" style={{ width: 30, height: 64 }}>
-        {/* realistic top-down sedan, nose pointing down */}
-        <svg viewBox="0 0 36 76" width="30" height="64">
+      <div ref={car} className="absolute left-0 top-0 will-change-transform" style={{ width: 30, height: 92 }}>
+        {/* top-down tractor-trailer, cab (nose) pointing down */}
+        <svg viewBox="0 0 36 110" width="30" height="92">
           <defs>
-            <linearGradient id={`body-${uid}`} x1="0" x2="1" y1="0" y2="0">
-              <stop offset="0" stopColor="#59606b" />
-              <stop offset="0.35" stopColor="#c9cfd8" />
-              <stop offset="0.65" stopColor="#aab1bc" />
-              <stop offset="1" stopColor="#4b525c" />
+            <linearGradient id={`trailer-${uid}`} x1="0" x2="1" y1="0" y2="0">
+              <stop offset="0" stopColor="#aeb5c0" />
+              <stop offset="0.4" stopColor="#f1f3f6" />
+              <stop offset="1" stopColor="#9aa2ae" />
             </linearGradient>
-            <linearGradient id={`glass-${uid}`} x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0" stopColor="#2b3442" />
-              <stop offset="1" stopColor="#10151c" />
+            <linearGradient id={`cab-${uid}`} x1="0" x2="1" y1="0" y2="0">
+              <stop offset="0" stopColor="#16263f" />
+              <stop offset="0.4" stopColor="#2f4a78" />
+              <stop offset="1" stopColor="#14223a" />
             </linearGradient>
             <filter id={`blur-${uid}`} x="-30%" y="-10%" width="160%" height="120%">
               <feGaussianBlur stdDeviation="2.2" />
             </filter>
           </defs>
           {/* ground shadow */}
-          <ellipse cx="19" cy="41" rx="15" ry="35" fill="#000" opacity="0.28" filter={`url(#blur-${uid})`} />
-          {/* tyres */}
-          <rect x="1" y="11" width="5" height="13" rx="2" fill="#111" />
-          <rect x="30" y="11" width="5" height="13" rx="2" fill="#111" />
-          <rect x="1" y="52" width="5" height="13" rx="2" fill="#111" />
-          <rect x="30" y="52" width="5" height="13" rx="2" fill="#111" />
-          {/* wing mirrors */}
-          <path d="M5 47 L1.5 49 L1.5 52 L5.5 51 Z" fill="#5a616c" />
-          <path d="M31 47 L34.5 49 L34.5 52 L30.5 51 Z" fill="#5a616c" />
-          {/* body */}
+          <ellipse cx="19" cy="56" rx="16" ry="52" fill="#000" opacity="0.26" filter={`url(#blur-${uid})`} />
+          {/* trailer tyres and cab tyres */}
+          <rect x="1" y="48" width="4.5" height="9" rx="1.6" fill="#111" />
+          <rect x="1" y="59" width="4.5" height="9" rx="1.6" fill="#111" />
+          <rect x="30.5" y="48" width="4.5" height="9" rx="1.6" fill="#111" />
+          <rect x="30.5" y="59" width="4.5" height="9" rx="1.6" fill="#111" />
+          <rect x="2" y="76" width="4.5" height="9" rx="1.6" fill="#111" />
+          <rect x="29.5" y="76" width="4.5" height="9" rx="1.6" fill="#111" />
+          <rect x="2" y="96" width="4.5" height="9" rx="1.6" fill="#111" />
+          <rect x="29.5" y="96" width="4.5" height="9" rx="1.6" fill="#111" />
+          {/* trailer */}
+          <rect x="4" y="1.5" width="28" height="68" rx="3" fill={`url(#trailer-${uid})`} stroke="#7b838f" strokeWidth="0.8" />
+          <path d="M8 6 V66 M13 6 V66 M18 6 V66 M23 6 V66 M28 6 V66" stroke="#7b838f" strokeOpacity="0.35" strokeWidth="0.6" />
+          <rect x="4" y="1.5" width="28" height="3.2" rx="1.2" fill="#c0392b" />
+          {/* fifth wheel / coupling */}
+          <rect x="14" y="69" width="8" height="8" rx="1.5" fill="#2a2f36" />
+          {/* cab */}
           <path
-            d="M18 2 C27.5 2 32 7 32 17 L32.5 56 C32.5 68 27 74 18 74 C9 74 3.5 68 3.5 56 L4 17 C4 7 8.5 2 18 2 Z"
-            fill={`url(#body-${uid})`}
-            stroke="#2a2f36"
+            d="M18 72 C26.5 72 30 74 30 80 L30 100 C30 106 25.500 109 18 109 C10.500 109 6 106 6 100 L6 80 C6 74 9.500 72 18 72 Z"
+            fill={`url(#cab-${uid})`}
+            stroke="#0f1a2c"
             strokeWidth="0.8"
           />
-          {/* bonnet and boot lines */}
-          <path d="M9 60 C13 64 23 64 27 60" fill="none" stroke="#fff" strokeOpacity="0.35" strokeWidth="0.8" />
-          <path d="M9 14 C13 10 23 10 27 14" fill="none" stroke="#000" strokeOpacity="0.2" strokeWidth="0.8" />
-          {/* windscreen (front, toward the nose) */}
-          <path d="M9.5 53 L26.5 53 L24.5 41.5 C21 40 15 40 11.5 41.5 Z" fill={`url(#glass-${uid})`} />
-          {/* roof */}
-          <rect x="9.5" y="27" width="17" height="14" rx="4" fill="#d4d9e0" stroke="#7b838f" strokeWidth="0.6" />
-          <path d="M12 29 L18 29" stroke="#fff" strokeOpacity="0.8" strokeWidth="1.2" strokeLinecap="round" />
-          {/* rear window */}
-          <path d="M11 20 C14 18 22 18 25 20 L26.5 27 L9.5 27 Z" fill={`url(#glass-${uid})`} />
-          {/* side glass edges */}
-          <path d="M9.5 27 L9.5 41" stroke="#10151c" strokeWidth="1" opacity="0.6" />
-          <path d="M26.5 27 L26.5 41" stroke="#10151c" strokeWidth="1" opacity="0.6" />
-          {/* glass shine */}
-          <path d="M12 44 L18 44" stroke="#fff" strokeOpacity="0.25" strokeWidth="1" strokeLinecap="round" />
-          {/* headlights (nose) and tail lights */}
-          <rect x="6.5" y="68" width="6" height="2.6" rx="1.2" fill="#fff6d1" />
-          <rect x="23.5" y="68" width="6" height="2.6" rx="1.2" fill="#fff6d1" />
-          <rect x="6.5" y="5" width="6" height="2" rx="1" fill="#c0392b" />
-          <rect x="23.5" y="5" width="6" height="2" rx="1" fill="#c0392b" />
+          {/* sleeper roof and roof fairing */}
+          <rect x="9.500" y="74" width="17" height="13" rx="3" fill="#dfe4ea" stroke="#7b838f" strokeWidth="0.6" />
+          {/* windscreen and bonnet */}
+          <path d="M9.500 91 L26.500 91 L25 99 C21.500 100.500 14.500 100.500 11 99 Z" fill="#0f151d" />
+          <path d="M12 94 L18 94" stroke="#fff" strokeOpacity="0.3" strokeWidth="1" strokeLinecap="round" />
+          <rect x="1" y="91" width="4" height="4" rx="1" fill="#59606b" />
+          <rect x="31" y="91" width="4" height="4" rx="1" fill="#59606b" />
+          {/* headlights and tail lights */}
+          <rect x="8" y="105" width="6" height="2.600" rx="1.200" fill="#fff6d1" />
+          <rect x="22" y="105" width="6" height="2.600" rx="1.200" fill="#fff6d1" />
+          <rect x="6" y="66" width="5" height="2" rx="1" fill="#c0392b" />
+          <rect x="25" y="66" width="5" height="2" rx="1" fill="#c0392b" />
         </svg>
       </div>
     </div>

@@ -4,20 +4,19 @@ import Script from "next/script"
 import "./globals.css"
 import { Header } from "@/components/Header"
 import { Footer } from "@/components/Footer"
-import { FloatingWhatsApp } from "@/components/FloatingWhatsApp"
 import { ScrollEffects } from "@/components/ScrollEffects"
 import { CarRoad } from "@/components/CarRoad"
-import { pages, siteUrl } from "@/lib/site"
+import { home, siteUrl } from "@/lib/site"
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" })
 const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-jakarta", display: "swap" })
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: { default: pages.home.title, template: "%s" },
-  description:
-    "Hire a Safe Driver in Dubai starting form AED 80.Monthly Driver,personal driver & after- party driver services.RTA approved.",
+  title: { default: home.title, template: "%s" },
+  description: home.lead,
   icons: { icon: "/icon.png" },
+  openGraph: { siteName: "American Road Haul LLC", images: [{ url: "/old/2024/09/pexels-209251.jpg" }] },
 }
 
 export const viewport: Viewport = {
@@ -40,7 +39,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Header />
         <main>{children}</main>
         <Footer />
-        <FloatingWhatsApp />
       </body>
     </html>
   )

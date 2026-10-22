@@ -4,28 +4,23 @@ import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react"
-import { ChevronDown, Mail, Menu, Phone, X } from "lucide-react"
-import { contact, nav, services } from "@/lib/site"
+import { ChevronDown, Mail, Menu, Phone, Search, X } from "lucide-react"
+import { contact, img, nav, serviceLinks as services } from "@/lib/nav"
 import { ThemeToggle } from "./ThemeToggle"
+import { SearchPopup } from "./Popups"
 
-export function Logo({ className = "" }: { className?: string }) {
+export function Logo({ className = "", onDark = false, footer = false }: { className?: string; onDark?: boolean; footer?: boolean }) {
   return (
-    <Link href="/" className={`flex items-center gap-3 ${className}`} aria-label="Excellent Ride home">
-      <span className="relative block h-11 w-11 shrink-0 overflow-hidden rounded-full">
+    <Link href="/" className={`flex items-center ${className}`} aria-label="American Road Haul LLC home">
+      <span className={`block overflow-hidden rounded-lg ${onDark ? "bg-white px-1.5" : ""}`}>
         <Image
-          src="/site/Excellent_Ride_Logo-01-01-01-removebg-preview.png"
-          alt=""
-          width={193}
-          height={87}
-          className="absolute -left-[3px] -top-[5px] max-w-none"
+          src={img(footer ? "2024/09/cdf6dbaa-76c9-4b95-a1b6-3f3598a21a29-removebg-preview-1.png" : "2026/06/cdf6dbaa-76c9-4b95-a1b6-3f3598a21a29-removebg-preview.png")}
+          alt="American Road Haul LLC"
+          width={612}
+          height={408}
+          className="h-[58px] w-auto"
           priority
         />
-      </span>
-      <span className="leading-none">
-        <span className="block whitespace-nowrap font-display text-base font-semibold tracking-tight sm:text-lg">EXCELLENT RIDE</span>
-        <span className="mt-1 hidden whitespace-nowrap text-[9px] font-medium uppercase tracking-[0.14em] opacity-60 min-[400px]:block">
-          Fleet Vehicle Management LLC
-        </span>
       </span>
     </Link>
   )
@@ -35,6 +30,7 @@ export function Header() {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
   const [menu, setMenu] = useState(false)
+  const [popup, setPopup] = useState<null | "search">(null)
 
   // Close menus after navigating (adjusting state during render, per React docs).
   const [prevPath, setPrevPath] = useState(pathname)
@@ -51,15 +47,16 @@ export function Header() {
     }
   }, [open])
 
-  const active = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href))
-  const link = (href: string) =>
-    `rounded-lg px-4 py-2 text-[15px] font-medium transition hover:text-accent ${active(href) ? "text-accent" : ""}`
+  const active = (href: string) => (href === "/" ? pathname === "/" : !href.includes("#") && pathname.startsWith(href))
+  const onService = services.some((s) => pathname.startsWith(`/${s.slug}`))
+  const link = (href: string, on = active(href)) =>
+    `whitespace-nowrap rounded-lg px-4 py-2 text-[15px] font-medium transition hover:text-accent ${on ? "text-accent" : ""}`
 
   return (
     <header className="sticky top-0 z-50">
-      <div className="hidden bg-accent text-[13px] font-semibold text-black md:block">
+      <div className="hidden bg-accent text-[13px] font-semibold text-white md:block">
         <div className="container-x flex h-10 items-center justify-between">
-          <a href={`mailto:${contact.email}`} className="flex items-center gap-2 hover:underline">
+          <a href={contact.emailHref} className="flex items-center gap-2 hover:underline">
             <Mail size={14} /> {contact.email}
           </a>
           <a href={contact.phoneHref} className="flex items-center gap-2 hover:underline">
@@ -68,26 +65,26 @@ export function Header() {
         </div>
       </div>
 
-      <div className="bg-[#0a0a0a] text-white">
+      <div className="bg-[#0a1a3a] text-white">
         <div className="container-x flex h-[76px] items-center justify-between gap-4">
-          <Logo />
+          <Logo onDark />
 
-          <nav className="hidden items-center gap-1 lg:flex" aria-label="Main">
+          <nav className="hidden items-center gap-1 xl:flex" aria-label="Main">
             {nav.map((n) =>
               n.label === "Services" ? (
                 <div key={n.href} className="relative" onMouseEnter={() => setMenu(true)} onMouseLeave={() => setMenu(false)}>
-                  <Link href={n.href} className={`flex items-center gap-1 ${link(n.href)}`}>
+                  <Link href={n.href} className={`flex items-center gap-1 ${link(n.href, onService)}`}>
                     {n.label} <ChevronDown size={14} className={`transition ${menu ? "rotate-180" : ""}`} />
                   </Link>
                   <div
-                    className={`absolute left-0 top-full w-72 pt-3 transition ${
+                    className={`absolute left-0 top-full w-80 pt-3 transition ${
                       menu ? "visible translate-y-0 opacity-100" : "invisible translate-y-2 opacity-0"
                     }`}
                   >
                     <ul className="card p-2 shadow-[var(--shadow)]">
                       {services.map((s) => (
                         <li key={s.slug}>
-                          <Link href={`/services/${s.slug}`} className="block rounded-lg px-3 py-2 text-sm text-ink hover:bg-surface-2">
+                          <Link href={`/${s.slug}`} className="block rounded-lg px-3 py-2 text-sm text-ink hover:bg-surface-2">
                             {s.label}
                           </Link>
                         </li>
@@ -104,15 +101,18 @@ export function Header() {
           </nav>
 
           <div className="flex items-center gap-2">
+            <button type="button" onClick={() => setPopup("search")} aria-label="Search" className="grid h-10 w-10 place-items-center rounded-lg border border-white/25 text-white transition hover:border-white">
+              <Search size={18} />
+            </button>
             <ThemeToggle />
-            <a href={contact.whatsapp} target="_blank" rel="noopener noreferrer" className="btn btn-primary hidden md:inline-flex">
-              Let&apos;s Ride Now!
-            </a>
+            <Link href="/contact-us" className="btn btn-primary hidden md:inline-flex">
+              Get a quote
+            </Link>
             <button
               type="button"
               onClick={() => setOpen(true)}
               aria-label="Open menu"
-              className="grid h-10 w-10 place-items-center rounded-lg border border-white/25 text-white lg:hidden"
+              className="grid h-10 w-10 place-items-center rounded-lg border border-white/25 text-white xl:hidden"
             >
               <Menu size={20} />
             </button>
@@ -120,9 +120,11 @@ export function Header() {
         </div>
       </div>
 
+      {popup === "search" && <SearchPopup onClose={() => setPopup(null)} />}
+
       {/* Mobile drawer */}
       <div
-        className={`fixed inset-0 z-[60] bg-bg transition-transform duration-300 lg:hidden ${
+        className={`fixed inset-0 z-[60] bg-bg transition-transform duration-300 xl:hidden ${
           open ? "translate-x-0" : "pointer-events-none translate-x-full"
         }`}
         aria-hidden={!open}
@@ -149,7 +151,7 @@ export function Header() {
                   <ul className="mt-3 grid gap-2 pl-1">
                     {services.map((s) => (
                       <li key={s.slug}>
-                        <Link href={`/services/${s.slug}`} className="text-sm text-muted hover:text-accent">
+                        <Link href={`/${s.slug}`} className="text-sm text-muted hover:text-accent">
                           {s.label}
                         </Link>
                       </li>
@@ -159,9 +161,9 @@ export function Header() {
               </li>
             ))}
           </ul>
-          <a href={contact.whatsapp} target="_blank" rel="noopener noreferrer" className="btn btn-primary mt-6 w-full">
-            Let&apos;s Ride Now!
-          </a>
+          <Link href="/contact-us" className="btn btn-primary mt-6 w-full">
+            Get a quote
+          </Link>
         </div>
       </div>
     </header>
