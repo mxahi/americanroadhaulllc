@@ -25,6 +25,7 @@ export function CarRoad() {
   const uid = useId().replace(/:/g, "")
   const car = useRef<HTMLDivElement>(null)
   const guide = useRef<SVGPathElement>(null)
+  const lights = useRef<SVGGElement>(null)
   const [layout, setLayout] = useState<Layout | null>(null)
 
   // Measure the page and build the road from the real section positions.
@@ -161,6 +162,38 @@ export function CarRoad() {
       return firstAtOrAfter(from, Yc)
     }
 
+    // Headlights switch on when the truck is driving over a dark section.
+    let lastCheck = 0
+    let lightsOn = false
+    const isDark = (x: number, y: number) => {
+      const px = Math.min(innerWidth - 1, Math.max(0, x))
+      const py = Math.min(innerHeight - 1, Math.max(0, y))
+      let node: Element | null = document.elementFromPoint(px, py)
+      while (node) {
+        const m = getComputedStyle(node).backgroundColor.match(/[\d.]+/g)
+        if (m && m.length >= 3) {
+          let [r, g, b] = m.map(Number)
+          const a = m.length > 3 ? m[3] : "1"
+          if (Number(a) > 0.6) {
+            if (r <= 1 && g <= 1 && b <= 1 && /color\(/.test(getComputedStyle(node).backgroundColor)) { r *= 255; g *= 255; b *= 255 }
+            return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255 < 0.42
+          }
+        }
+        node = node.parentElement
+      }
+      return false
+    }
+    const updateLights = (x: number, y: number) => {
+      const now = performance.now()
+      if (now - lastCheck < 140) return
+      lastCheck = now
+      const on = isDark(x, y - scrollY)
+      if (on !== lightsOn && lights.current) {
+        lightsOn = on
+        lights.current.style.opacity = on ? "1" : "0"
+      }
+    }
+
     const maxScroll = () => Math.max(1, document.documentElement.scrollHeight - vh())
     let target = window.scrollY
     let current = target
@@ -191,6 +224,7 @@ export function CarRoad() {
       if (Math.abs(diff) < 0.05) diff = 0
       heading += diff * 0.2
       el.style.transform = `translate(${xs[i] - 15}px, ${ys[i] - 46}px) rotate(${heading}deg)`
+      updateLights(xs[i], ys[i])
     }
     const step = () => {
       const delta = target - current
@@ -251,7 +285,7 @@ export function CarRoad() {
       </svg>
       <div ref={car} className="absolute left-0 top-0 will-change-transform" style={{ width: 30, height: 92 }}>
         {/* top-down tractor-trailer, cab (nose) pointing down */}
-        <svg viewBox="0 0 36 110" width="30" height="92">
+        <svg viewBox="0 0 36 110" width="30" height="92" style={{ overflow: "visible" }}>
           <defs>
             <linearGradient id={`trailer-${uid}`} x1="0" x2="1" y1="0" y2="0">
               <stop offset="0" stopColor="#aeb5c0" />
@@ -266,6 +300,10 @@ export function CarRoad() {
             <filter id={`blur-${uid}`} x="-30%" y="-10%" width="160%" height="120%">
               <feGaussianBlur stdDeviation="2.2" />
             </filter>
+            <linearGradient id={`beam-${uid}`} x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0" stopColor="#fff3b0" stopOpacity="0.85" />
+              <stop offset="1" stopColor="#fff3b0" stopOpacity="0" />
+            </linearGradient>
           </defs>
           {/* ground shadow */}
           <ellipse cx="19" cy="56" rx="16" ry="52" fill="#000" opacity="0.26" filter={`url(#blur-${uid})`} />
@@ -303,6 +341,15 @@ export function CarRoad() {
           <rect x="22" y="105" width="6" height="2.600" rx="1.200" fill="#fff6d1" />
           <rect x="6" y="66" width="5" height="2" rx="1" fill="#c0392b" />
           <rect x="25" y="66" width="5" height="2" rx="1" fill="#c0392b" />
+          {/* lights: headlight beams ahead of the cab, glowing tail lights; shown over dark sections */}
+          <g ref={lights} style={{ opacity: 0, transition: "opacity 0.35s ease" }}>
+            <path d="M8 108 L14 108 L11 150 L-6 150 Z" fill={`url(#beam-${uid})`} />
+            <path d="M22 108 L28 108 L42 150 L25 150 Z" fill={`url(#beam-${uid})`} />
+            <circle cx="11" cy="106" r="4" fill="#fff6d1" opacity="0.9" filter={`url(#blur-${uid})`} />
+            <circle cx="25" cy="106" r="4" fill="#fff6d1" opacity="0.9" filter={`url(#blur-${uid})`} />
+            <circle cx="8.500" cy="67" r="3.500" fill="#ff3b3b" opacity="0.9" filter={`url(#blur-${uid})`} />
+            <circle cx="27.500" cy="67" r="3.500" fill="#ff3b3b" opacity="0.9" filter={`url(#blur-${uid})`} />
+          </g>
         </svg>
       </div>
     </div>
